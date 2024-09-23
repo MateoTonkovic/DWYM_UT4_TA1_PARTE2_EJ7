@@ -17,9 +17,25 @@ function App() {
     }
   };
 
-  const deleteTask = (id) => {
+  const deleteTareas = (id) => {
     const updatedTasks = tareas.filter((task) => task.id !== id);
     setTareas(updatedTasks);
+  };
+
+  const editTask = (id, newText) => {
+    setTareas(
+      tareas.map((task) =>
+        task.id === id ? { ...task, text: newText, isEditing: false } : task
+      )
+    );
+  };
+
+  const toggleEditing = (id) => {
+    setTareas(
+      tareas.map((task) =>
+        task.id === id ? { ...task, isEditing: !task.isEditing } : task
+      )
+    );
   };
 
   return (
@@ -38,8 +54,29 @@ function App() {
         {tareas.map((task) => (
           <div key={task.id} className="task-item">
             <span>{task.text}</span>
-            <button className="delete-btn" onClick={() => deleteTask(task.id)}>
+            <button
+              className="delete-btn"
+              onClick={() => deleteTareas(task.id)}
+            >
               🗑️
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="task-list">
+        {tareas.map((task) => (
+          <div key={task.id} className="task-item">
+            {task.isEditing ? (
+              <input
+                type="text"
+                value={task.text}
+                onChange={(e) => editTask(task.id, e.target.value)}
+              />
+            ) : (
+              <span>{task.text}</span>
+            )}
+            <button onClick={() => toggleEditing(task.id)}>
+              {task.isEditing ? "Guardar" : "✏️"}
             </button>
           </div>
         ))}
