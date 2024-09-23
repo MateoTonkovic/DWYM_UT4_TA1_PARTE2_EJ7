@@ -17,6 +17,11 @@ function App() {
     }
   };
 
+  const deleteTask = (id) => {
+    const updatedTasks = tareas.filter((task) => task.id !== id);
+    setTareas(updatedTasks);
+  };
+
   return (
     <div>
       <h1>Lista de Tareas</h1>
@@ -29,11 +34,16 @@ function App() {
         />
         <button type="submit">Agregar Tarea</button>
       </form>
-      <ul>
-        {tareas.map((tarea, index) => (
-          <li key={index}>{tarea}</li>
+      <div className="task-list">
+        {tareas.map((task) => (
+          <div key={task.id} className="task-item">
+            <span>{task.text}</span>
+            <button className="delete-btn" onClick={() => deleteTask(task.id)}>
+              🗑️
+            </button>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
